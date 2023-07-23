@@ -1,8 +1,6 @@
 ## Idea
 
-- NFT swap
-- NFTs buy sell
-- Offers
+- Swap NFT for NFT
 
 # Availabe Scripts
 
