@@ -12,9 +12,7 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <RainbowKitProvider>
         <Header />
-        <main className="max-w-7xl m-auto px-4">
-          <Component {...pageProps} />
-        </main>
+        <Component {...pageProps} />
       </RainbowKitProvider>
     </>
   );

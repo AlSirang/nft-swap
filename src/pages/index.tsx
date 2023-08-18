@@ -1,42 +1,38 @@
 import { HomeMain } from "@/components/home/homeMain";
 import { dummyCollections } from "@/utils/dummyCollections";
 import { alchemy } from "@/configs/alchemy.config";
-import { HomeProps } from "@/types";
+import { extractCollectionInfo } from "@/utils/functions";
+import { IHomePageProps } from "@/types";
 
-export default function Home(props: HomeProps) {
-  console.log(props);
-
+export default function Home(props: IHomePageProps) {
   return (
     <section>
-      <HomeMain />
+      <HomeMain {...props} />
     </section>
   );
 }
 
 export const getServerSideProps = async () => {
-  const randomNumber = Math.floor(Math.random() * 2);
-
-  const collection = dummyCollections[randomNumber];
+  const collection = dummyCollections[0];
 
   const defaultPlayload = {
-    address: undefined,
-    description: undefined,
-    image: undefined,
-    name: undefined,
+    contract: null,
+    symbol: null,
+    name: null,
+    description: null,
+    title: null,
+    image: null,
+    tokenId: null,
   };
 
   try {
-    const { nfts } = await alchemy.nft.getNftsForContract(collection, {
-      pageSize: 1,
-    });
+    const { nfts } = await alchemy.nft.getNftsForContract(collection);
 
     return {
-      props: {
-        address: nfts[0].contract.address,
-        ...nfts[0].rawMetadata,
-      },
+      props: extractCollectionInfo(nfts[0]),
     };
   } catch (err) {
+    console.log(err);
     return {
       props: {
         ...defaultPlayload,

@@ -1,10 +1,8 @@
-"use client";
 import Link from "next/link";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
+import { ConnectButton } from "./connectButton";
 
 export const Header = () => {
-  const { isConnected } = useAccount();
   return (
     <header className="max-w-7xl m-auto px-5 py-3">
       <div className="flex justify-between">
@@ -16,12 +14,11 @@ export const Header = () => {
           <Link href="/explore" className="text-lg">
             Explore
           </Link>
-          {isConnected && (
-            <Link href="/profile" className="text-lg">
-              Profile
-            </Link>
-          )}
-          <ConnectButton chainStatus="none" />
+          <Link href="/profile" className="text-lg">
+            Profile
+          </Link>
+
+          <ConnectButton />
         </nav>
       </div>
     </header>
