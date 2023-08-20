@@ -5,6 +5,7 @@ import { ICollectionPageProps } from "@/types";
 import { extractCollectionInfo } from "@/utils/functions";
 import { collectionAvatar } from "@/utils/imgSrc";
 import { OfferModal } from "@/components/collection/offerModal";
+import { OffersHistoryTable } from "@/components/collection/offersHistoryTable";
 
 export default function NFTInfo({
   image,
@@ -73,6 +74,10 @@ export default function NFTInfo({
             </div>
           </div>
         </div>
+      </section>
+
+      <section className="mt-16">
+        <OffersHistoryTable />
       </section>
     </>
   );
