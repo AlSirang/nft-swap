@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { useAccount } from "wagmi";
 import { ConnectButton } from "./connectButton";
 
 export const Header = () => {

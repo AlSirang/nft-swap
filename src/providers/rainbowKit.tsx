@@ -1,6 +1,9 @@
 import React from "react";
 import {
+  darkTheme,
   getDefaultWallets,
+  lightTheme,
+  midnightTheme,
   RainbowKitProvider as RkitProvider,
 } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
@@ -8,6 +11,7 @@ import { sepolia } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import "@rainbow-me/rainbowkit/styles.css";
+import { baseTheme } from "@rainbow-me/rainbowkit/dist/themes/baseTheme";
 
 const { chains, publicClient } = configureChains(
   [sepolia],
@@ -33,7 +37,15 @@ export const RainbowKitProvider: React.FunctionComponent<{
   });
   return (
     <WagmiConfig config={wagmiConfig}>
-      <RkitProvider chains={chains}>{children}</RkitProvider>
+      <RkitProvider
+        theme={lightTheme({
+          accentColor: "#fff",
+          accentColorForeground: "black",
+        })}
+        chains={chains}
+      >
+        {children}
+      </RkitProvider>
     </WagmiConfig>
   );
 };
