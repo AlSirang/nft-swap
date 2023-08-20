@@ -20,7 +20,7 @@ export const extractCollectionInfo = (collection: OwnedNft | Nft) => {
     name,
     description: description ? description : "",
     title: title ? title : `${symbol}# ${collection.tokenId}`,
-    image: image ? image : profileAvatar,
+    image: image ? image : "/img/nft-placeholder.png",
     tokenId: collection.tokenId,
   };
 };
