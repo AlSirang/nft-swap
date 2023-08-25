@@ -1,13 +1,15 @@
-import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
+import { Dialog, Transition } from "@headlessui/react";
 import { useAccount } from "wagmi";
+import OfferForm from "./offerForm";
 import { ConnectButton } from "../connectButton";
 
 export const OfferModal = ({ isOpen = false, onClose = () => {} }) => {
   const { isConnected } = useAccount();
+
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={onClose}>
+      <Dialog as="div" className="relative z-10" onClose={() => null}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -31,13 +33,23 @@ export const OfferModal = ({ isOpen = false, onClose = () => {} }) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="w-full min-h-[3rem] h-full max-w-md transform  rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title
                   as="h3"
-                  className="text-xl text-center font-medium leading-6 text-gray-900"
+                  className="text-xl  font-medium leading-6 text-gray-900 relative"
                 >
-                  {isConnected && "Make an Offer with your NFT"}
-                  {!isConnected && "Please connect your wallet"}
+                  <span className="absolute -right-2 -top-2.5 inline-block  border-gray-900 rounded-lg hover:bg-slate-200">
+                    <button
+                      className="px-2 felx justify-center items-center"
+                      onClick={onClose}
+                    >
+                      <span>X</span>
+                    </button>
+                  </span>
+                  <span className="pt-3 inline-block">
+                    {isConnected && "Make an Offer with your NFT"}
+                    {!isConnected && "Please connect your wallet"}
+                  </span>
                 </Dialog.Title>
                 <div className="grid gap-2 mt-4">
                   {!isConnected && (
@@ -49,7 +61,7 @@ export const OfferModal = ({ isOpen = false, onClose = () => {} }) => {
                   )}
                   {isConnected && (
                     <div>
-                      <div>dropdown</div>
+                      <OfferForm />
                     </div>
                   )}
                 </div>

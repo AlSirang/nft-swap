@@ -26,6 +26,10 @@ export const getAllCollections = async (address: string) => {
   } catch (err) {
     console.log("getAllCollectionsERR: ", err);
 
-    return { totalNFTs: 0 };
+    return {
+      totalNFTs: 0,
+      totalCollections: 0,
+      collections: [],
+    };
   }
 };
