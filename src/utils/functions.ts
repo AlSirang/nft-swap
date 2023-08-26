@@ -1,5 +1,4 @@
 import { Nft, OwnedNft } from "alchemy-sdk";
-import { profileAvatar } from "./imgSrc";
 
 export const shortenAddress = (address: string | undefined) => {
   if (!address) return "";
@@ -8,8 +7,8 @@ export const shortenAddress = (address: string | undefined) => {
 
 export const extractCollectionInfo = (collection: OwnedNft | Nft) => {
   const contract = collection.contract.address;
-  const symbol = collection.contract.symbol;
-  const name = collection.contract.name;
+  const symbol = collection.contract?.symbol || null;
+  const name = collection.contract.name || null;
   const image = collection.rawMetadata?.image;
   const title = collection.rawMetadata?.name;
   const description = collection.description;
@@ -19,7 +18,7 @@ export const extractCollectionInfo = (collection: OwnedNft | Nft) => {
     symbol,
     name,
     description: description ? description : "",
-    title: title ? title : `${symbol}# ${collection.tokenId}`,
+    title: (title ? title : symbol) + ` #${collection.tokenId}`,
     image: image ? image : "/img/nft-placeholder.png",
     tokenId: collection.tokenId,
   };

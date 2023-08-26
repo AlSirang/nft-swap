@@ -13,7 +13,8 @@ export default function Home(props: IHomePageProps) {
 }
 
 export const getServerSideProps = async () => {
-  const collection = dummyCollections[0];
+  const randomNumber = Math.floor(Math.random() * 2);
+  const collection = dummyCollections[randomNumber];
 
   const defaultPlayload = {
     contract: null,

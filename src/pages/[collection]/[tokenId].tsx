@@ -19,8 +19,6 @@ export default function NFTInfo({
     setIsModalOpen(false);
   };
 
-  const onMakeOffer = () => {};
-
   return (
     <>
       <OfferModal isOpen={isModalOpen} onClose={onModalClose} />
