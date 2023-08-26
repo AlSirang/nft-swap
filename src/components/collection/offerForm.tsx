@@ -23,9 +23,12 @@ export default function OfferForm() {
     event.preventDefault();
 
     try {
+      const data = new FormData(event.currentTarget);
       const tokenId = selected?.tokenId;
 
       if (!tokenId) return toast.error("Please select a NFT");
+      const ethPrice = data.get("ethPrice");
+      console.log(ethPrice, tokenId);
     } catch (err) {}
   };
   return (
@@ -42,6 +45,7 @@ export default function OfferForm() {
         <input
           className="mt-1 w-full rounded-md border border-gray-300 bg-transparent px-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all outline-none focus:ring-1 ring-gray-300 text-gray-900 py-1.5 h-11"
           type="number"
+          name="ethPrice"
           step="any"
           min="0"
         />
@@ -117,7 +121,7 @@ const Dropdown: React.FunctionComponent<{
               <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                 {inWallet.map((collection) => (
                   <Listbox.Option
-                    key={collection.tokenId}
+                    key={collection.title}
                     className={({ active }) =>
                       classNames(
                         {

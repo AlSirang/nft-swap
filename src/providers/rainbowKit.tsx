@@ -7,14 +7,13 @@ import {
   RainbowKitProvider as RkitProvider,
 } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { sepolia } from "wagmi/chains";
+import { sepolia, localhost } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import "@rainbow-me/rainbowkit/styles.css";
-import { baseTheme } from "@rainbow-me/rainbowkit/dist/themes/baseTheme";
 
 const { chains, publicClient } = configureChains(
-  [sepolia],
+  [sepolia, localhost],
   [
     alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || "" }),
     publicProvider(),
