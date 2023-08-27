@@ -130,7 +130,10 @@ contract NFTExchange {
 
     function removeOffer(uint256 _offerIndex) external {
         Offer memory _offer = offers[_offerIndex];
-        require(_offer.from == msg.sender, "Only offer creator");
+
+        address msgSender = msg.sender;
+
+        require(_offer.from == msgSender, "Only offer creator");
 
         // remove offer from mapping to mark the offer as completed
         delete offers[_offerIndex];
@@ -138,16 +141,13 @@ contract NFTExchange {
         // transfer tokenId back to creator
         IERC721(_offer.fromCollection).transferFrom(
             address(this),
-            msg.sender,
+            msgSender,
             _offer.fromId
         );
 
         // if offer owner has sent some eth return them back
         if (_offer.value > 0) {
-            (bool success, ) = payable(msg.sender).call{value: _offer.value}(
-                ""
-            );
-
+            (bool success, ) = payable(msgSender).call{value: _offer.value}("");
             require(success, "ETH transfer failed");
         }
     }

@@ -49,7 +49,7 @@ describe("Exchange.test", function () {
     });
   });
 
-  describe("Offer tests", () => {
+  describe("Create Offer", () => {
     let recipet: ContractTransaction;
     const fromId = 1; // token id for which offer has been created
     const toId = 0;
@@ -62,38 +62,72 @@ describe("Exchange.test", function () {
         toId
       );
     });
-
-    describe("Create Offer", () => {
-      it("should create offer", async () => {
-        expect(recipet).emit(exchange, "SubmitOffer");
-      });
-
-      it("should create correct offer mapping", async () => {
-        const currentOffer = await exchange.offers(1);
-
-        expect(currentOffer.fromCollection).to.eq(nftOne.address);
-        expect(currentOffer.toCollection).to.eq(nftTwo.address);
-        expect(currentOffer.toId).to.eq(toId);
-        expect(currentOffer.fromId).to.eq(fromId);
-        expect(currentOffer.value).to.eq(0);
-      });
+    it("should create offer", async () => {
+      expect(recipet).emit(exchange, "SubmitOffer");
     });
 
-    describe("Accept Offer", () => {
-      beforeEach(async () => {
-        recipet = await exchange.connect(collectionTwoHolder).accpetOffer(1);
-      });
+    it("should create correct offer mapping", async () => {
+      const currentOffer = await exchange.offers(1);
 
-      it("should emit OfferAccept event after successful call", async () => {
-        expect(recipet).emit(exchange, "OfferAccept");
-      });
+      expect(currentOffer.fromCollection).to.eq(nftOne.address);
+      expect(currentOffer.toCollection).to.eq(nftTwo.address);
+      expect(currentOffer.from).to.eq(collectionOneHolder.address);
+      expect(currentOffer.toId).to.eq(toId);
+      expect(currentOffer.fromId).to.eq(fromId);
+      expect(currentOffer.value).to.eq(0);
+    });
+  });
 
-      it("should update the ownership for offered token Id", async () => {
-        expect(await nftOne.ownerOf(fromId)).to.eq(collectionTwoHolder.address);
-      });
-      it("should update the ownership for receving token Id", async () => {
-        expect(await nftTwo.ownerOf(toId)).to.eq(collectionOneHolder.address);
-      });
+  describe("Accept Offer", () => {
+    let recipet: ContractTransaction;
+    const fromId = 1; // token id for which offer has been created
+    const toId = 0;
+
+    beforeEach(async () => {
+      await exchange.createOffer(nftOne.address, nftTwo.address, fromId, toId);
+      recipet = await exchange.connect(collectionTwoHolder).accpetOffer(1);
+    });
+
+    it("should emit OfferAccept event after successful call", async () => {
+      expect(recipet).emit(exchange, "OfferAccept");
+    });
+
+    it("should update the ownership for offered token Id", async () => {
+      expect(await nftOne.ownerOf(fromId)).to.eq(collectionTwoHolder.address);
+    });
+    it("should update the ownership for receving token Id", async () => {
+      expect(await nftTwo.ownerOf(toId)).to.eq(collectionOneHolder.address);
+    });
+  });
+
+  describe("Remove Offer", () => {
+    const fromId = 1; // token id for which offer has been created
+    const toId = 0;
+
+    beforeEach(async () => {
+      await exchange.createOffer(nftOne.address, nftTwo.address, fromId, toId);
+    });
+
+    it("should revert when remove offer is called by address other than creator", async () => {
+      await expect(exchange.connect(collectionTwoHolder).removeOffer(1)).to
+        .reverted;
+    });
+
+    it("should remove offer and transfer NFT to owner", async () => {
+      await exchange.connect(collectionOneHolder).removeOffer(1);
+
+      expect(await nftOne.ownerOf(fromId)).to.eq(collectionOneHolder.address);
+    });
+
+    it("should remove offer mapping", async () => {
+      await exchange.connect(collectionOneHolder).removeOffer(1);
+      const removedOffer = await exchange.offers(1);
+
+      expect(removedOffer.fromCollection).to.eq(ethers.constants.AddressZero);
+      expect(removedOffer.toCollection).to.eq(ethers.constants.AddressZero);
+      expect(removedOffer.from).to.eq(ethers.constants.AddressZero);
+      expect(removedOffer.toId).to.eq(0);
+      expect(removedOffer.fromId).to.eq(0);
     });
   });
 });
