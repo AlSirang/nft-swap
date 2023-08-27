@@ -1,16 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import classNames from "classnames";
-import { useAccount } from "wagmi";
+import { useAccount, usePublicClient, useWalletClient } from "wagmi";
 import { Listbox, Transition } from "@headlessui/react";
 import { getAllCollections } from "@/alchemy-core/getAllCollections";
 import { CheckIcon, ChevronIcon } from "@/svgIcons";
 import { IWalletNFT } from "@/types";
 import { toast } from "react-hot-toast";
+import {
+  ERC721ABI,
+  exchnageABI,
+  exchnageAddress,
+} from "@/configs/contract.config";
+import { getContract } from "viem";
+import { useRouter } from "next/router";
 
 export default function OfferForm() {
   const { address } = useAccount();
   const [selected, setSelected] = useState<IWalletNFT | null>(null);
   const [inWallet, setInWallet] = useState<IWalletNFT[]>([]);
+  const { data: walletClient } = useWalletClient();
+  const publicClient = usePublicClient();
+  const router = useRouter();
 
   useEffect(() => {
     address &&
@@ -19,17 +29,90 @@ export default function OfferForm() {
       });
   }, [address]);
 
+  const apporveToastId = useRef<any>();
+
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const tokenId = selected?.tokenId;
+    if (!tokenId) return toast.error("Please select a NFT");
 
-    try {
-      const data = new FormData(event.currentTarget);
-      const tokenId = selected?.tokenId;
+    const txPromise = new Promise(async (resolve, reject) => {
+      try {
+        const data = new FormData(event.currentTarget);
+        const ethPrice = data.get("ethPrice");
+        const fromCollection = selected?.contract; // offered collection
+        const offeredTokenId = selected?.tokenId; // offered NFT
 
-      if (!tokenId) return toast.error("Please select a NFT");
-      const ethPrice = data.get("ethPrice");
-      console.log(ethPrice, tokenId);
-    } catch (err) {}
+        const forTokenId = router.query.tokenId; // token Id for which offer is being made
+        const forCollection = router.query.collection; // collection of offer requesting tokenId
+
+        // @ts-ignore
+        const collectContract = getContract({
+          abi: ERC721ABI,
+          // @ts-ignore
+          address: fromCollection,
+          publicClient,
+          // @ts-ignore
+          walletClient,
+        });
+
+        const isApprovedForAll = await collectContract.read.isApprovedForAll([
+          address,
+          exchnageAddress,
+        ]);
+
+        if (!isApprovedForAll) {
+          apporveToastId.current = toast(
+            "Please apporve Exchange address. This is one time operation",
+            {
+              duration: Infinity,
+            }
+          );
+
+          // @ts-ignore
+          const hash = await collectContract.write.setApprovalForAll([
+            exchnageAddress,
+            true,
+          ]);
+          toast.dismiss(apporveToastId.current);
+
+          await publicClient.waitForTransactionReceipt({
+            hash,
+          });
+        }
+
+        const exchangeContract = getContract({
+          abi: exchnageABI,
+          address: exchnageAddress,
+          // @ts-ignore
+          walletClient,
+        });
+
+        // @ts-ignore
+        const hash = await exchangeContract.write.createOffer([
+          fromCollection,
+          forCollection,
+          offeredTokenId,
+          forTokenId,
+        ]);
+
+        await publicClient.waitForTransactionReceipt({
+          hash,
+        });
+
+        resolve(hash);
+      } catch (err) {
+        toast.dismiss(apporveToastId.current);
+        // @ts-ignore
+        reject(err?.shortMessage);
+      }
+    });
+
+    toast.promise(txPromise, {
+      loading: "Transaction is in progress",
+      success: "Transaction completed successfully",
+      error: (err) => err,
+    });
   };
   return (
     <form onSubmit={onSubmit}>
