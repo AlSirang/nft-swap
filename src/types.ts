@@ -12,8 +12,8 @@ export interface ICollectionPageProps extends ICardProps {}
 
 export interface IWalletNFT {
   contract: string;
-  symbol: string | undefined;
-  name: string | undefined;
+  symbol: string | null;
+  name: string | null;
   description: string;
   title: string;
   image: string;
