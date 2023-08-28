@@ -8,7 +8,9 @@ export interface ICardProps {
   tokenId?: number | undefined;
 }
 export interface IHomePageProps extends ICardProps {}
-export interface ICollectionPageProps extends ICardProps {}
+export interface ICollectionPageProps extends ICardProps {
+  owner: string | null;
+}
 
 export interface IWalletNFT {
   contract: string;
@@ -18,4 +20,14 @@ export interface IWalletNFT {
   title: string;
   image: string;
   tokenId: string;
+}
+
+export interface ISubmitOffer {
+  fromCollection: string;
+  toCollection: string;
+  from: string;
+  toId: number;
+  fromId: number;
+  msgValue: number;
+  offerIndex: number;
 }

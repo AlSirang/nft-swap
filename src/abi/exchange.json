@@ -11,13 +11,13 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "offeredTokenId",
+        "name": "fromId",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "forTokenId",
+        "name": "toId",
         "type": "uint256"
       }
     ],
@@ -30,13 +30,38 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "offeredTokenId",
+        "name": "offerId",
         "type": "uint256"
       },
       {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "fromId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "toId",
+        "type": "uint256"
+      }
+    ],
+    "name": "OfferRemoved",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "internalType": "uint256",
-        "name": "forTokenId",
+        "name": "toId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "fromId",
         "type": "uint256"
       },
       {
@@ -52,9 +77,9 @@
         "type": "uint256"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
-        "name": "forCollection",
+        "name": "toCollection",
         "type": "address"
       },
       {
@@ -95,42 +120,23 @@
       },
       {
         "internalType": "address",
-        "name": "_forCollection",
+        "name": "_toCollection",
         "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "_offeredTokenId",
+        "name": "_fromId",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "_forTokenId",
+        "name": "_toId",
         "type": "uint256"
       }
     ],
     "name": "createOffer",
     "outputs": [],
     "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "getOffers",
-    "outputs": [
-      {
-        "internalType": "uint256[]",
-        "name": "",
-        "type": "uint256[]"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -145,32 +151,32 @@
     "outputs": [
       {
         "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
         "name": "fromCollection",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "forCollection",
+        "name": "toCollection",
         "type": "address"
       },
       {
-        "internalType": "address",
-        "name": "from",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "fromId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "toId",
+        "type": "uint256"
       },
       {
         "internalType": "uint256",
         "name": "value",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "offeredTokenId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "forTokenId",
         "type": "uint256"
       }
     ],
@@ -188,30 +194,6 @@
     "name": "removeOffer",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "tokenIdToOffers",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   }
 ]

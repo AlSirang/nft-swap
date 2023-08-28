@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NextPageContext } from "next";
+import { useAccount } from "wagmi";
 import { alchemy } from "@/configs/alchemy.config";
 import { ICollectionPageProps } from "@/types";
 import { extractCollectionInfo } from "@/utils/functions";
@@ -13,11 +14,19 @@ export default function NFTInfo({
   symbol,
   name,
   description,
+  owner,
 }: ICollectionPageProps) {
+  const { address } = useAccount();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
   const onModalClose = () => {
     setIsModalOpen(false);
   };
+
+  useEffect(() => {
+    if (address && owner)
+      setIsOwner(owner?.toLocaleLowerCase() !== address?.toLocaleLowerCase());
+  }, [address, owner]);
 
   return (
     <>
@@ -60,14 +69,16 @@ export default function NFTInfo({
                 </h2>
               </div>
               <span>
-                <button
-                  className="py-1 px-10 text-black bg-white rounded-lg hover:bg-slate-200 transition-all"
-                  onClick={() => setIsModalOpen(true)}
-                >
-                  <span className="flex items-center justify-center text-lg font-semibold">
-                    Make Offer
-                  </span>
-                </button>
+                {isOwner && (
+                  <button
+                    className="py-1 px-10 text-black bg-white rounded-lg hover:bg-slate-200 transition-all"
+                    onClick={() => setIsModalOpen(true)}
+                  >
+                    <span className="flex items-center justify-center text-lg font-semibold">
+                      Make Offer
+                    </span>
+                  </button>
+                )}
               </span>
             </div>
           </div>
@@ -95,19 +106,20 @@ export const getServerSideProps = async (context: NextPageContext) => {
   };
 
   try {
-    const results = await alchemy.nft.getNftMetadata(
-      collection as string,
-      tokenId as string
-    );
+    const [metadata, { owners }] = await Promise.all([
+      alchemy.nft.getNftMetadata(collection as string, tokenId as string),
+      alchemy.nft.getOwnersForNft(collection as string, tokenId as string),
+    ]);
 
     return {
-      props: extractCollectionInfo(results),
+      props: { ...extractCollectionInfo(metadata), owner: owners[0] },
     };
   } catch (err) {
     console.log(err);
     return {
       props: {
         ...defaultPlayload,
+        owner: "",
       },
     };
   }

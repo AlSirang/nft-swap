@@ -41,10 +41,10 @@ export default function OfferForm() {
         const data = new FormData(event.currentTarget);
         const ethPrice = data.get("ethPrice");
         const fromCollection = selected?.contract; // offered collection
-        const offeredTokenId = selected?.tokenId; // offered NFT
+        const fromId = selected?.tokenId; // offered NFT
 
-        const forTokenId = router.query.tokenId; // token Id for which offer is being made
-        const forCollection = router.query.collection; // collection of offer requesting tokenId
+        const toId = router.query.tokenId; // token Id for which offer is being made
+        const toCollection = router.query.collection; // collection of offer requesting tokenId
 
         // @ts-ignore
         const collectContract = getContract({
@@ -91,9 +91,9 @@ export default function OfferForm() {
         // @ts-ignore
         const hash = await exchangeContract.write.createOffer([
           fromCollection,
-          forCollection,
-          offeredTokenId,
-          forTokenId,
+          toCollection,
+          fromId,
+          toId,
         ]);
 
         await publicClient.waitForTransactionReceipt({
