@@ -27,20 +27,17 @@ contract NFTExchange {
     //**************************************//
 
     event SubmitOffer(
-        uint256 indexed forTokenId,
-        uint256 offeredTokenId, // is the token for which user has made offer
+        uint256 indexed toId,
+        uint256 fromId, // is the token for which user has made offer
         uint256 offerIndex,
         uint256 msgValue,
-        address toCollection,
+        address indexed toCollection,
         address fromCollection,
         address from
     );
 
-    event OfferAccept(
-        uint256 offerId,
-        uint256 offeredTokenId,
-        uint256 forTokenId
-    );
+    event OfferAccept(uint256 offerId, uint256 fromId, uint256 toId);
+    event OfferRemoved(uint256 offerId, uint256 fromId, uint256 toId);
 
     //*************************************//
     //************* Functions *************//
@@ -150,5 +147,7 @@ contract NFTExchange {
             (bool success, ) = payable(msgSender).call{value: _offer.value}("");
             require(success, "ETH transfer failed");
         }
+
+        emit OfferRemoved(_offerIndex, _offer.fromId, _offer.toId);
     }
 }
