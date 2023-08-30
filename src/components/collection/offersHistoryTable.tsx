@@ -11,7 +11,11 @@ import {
 import { ISubmitOffer } from "@/types";
 import { shortenAddress } from "@/utils/functions";
 
-export const OffersHistoryTable = () => {
+export const OffersHistoryTable = ({
+  showOfferButton,
+}: {
+  showOfferButton: boolean;
+}) => {
   const publicClient = usePublicClient();
   const [logs, setLogs] = useState<ISubmitOffer[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -88,6 +92,7 @@ export const OffersHistoryTable = () => {
                 <th className="px-4 py-2">Collection</th>
                 <th className="px-4 py-2">TokenId</th>
                 <th className="px-4 py-2">ETH Price</th>
+                {showOfferButton && <th>Action</th>}
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
@@ -112,6 +117,13 @@ export const OffersHistoryTable = () => {
                     </Link>
                   </td>
                   <td className="px-4 py-2 ">{log.msgValue} ETH</td>
+                  {showOfferButton && (
+                    <td>
+                      <button className="px-2 py-1 rounded-md border-2 border-black">
+                        Accpet Offer
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>

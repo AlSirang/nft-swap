@@ -7,6 +7,7 @@ import { extractCollectionInfo } from "@/utils/functions";
 import { collectionAvatar } from "@/utils/imgSrc";
 import { OfferModal } from "@/components/collection/offerModal";
 import { OffersHistoryTable } from "@/components/collection/offersHistoryTable";
+import { exchnageAddress } from "@/configs/contract.config";
 
 export default function NFTInfo({
   image,
@@ -16,17 +17,22 @@ export default function NFTInfo({
   description,
   owner,
 }: ICollectionPageProps) {
-  const { address } = useAccount();
+  const { isConnected, address } = useAccount();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isOwner, setIsOwner] = useState(false);
+  const [showOfferButton, setShowOfferButton] = useState(false);
+  const [isWalletConnected, setIsWalletConnected] = useState(true);
   const onModalClose = () => {
     setIsModalOpen(false);
   };
 
   useEffect(() => {
     if (address && owner)
-      setIsOwner(owner?.toLocaleLowerCase() !== address?.toLocaleLowerCase());
-  }, [address, owner]);
+      setShowOfferButton(
+        owner?.toLocaleLowerCase() !== address?.toLocaleLowerCase()
+      );
+
+    setIsWalletConnected(isConnected);
+  }, [address, owner, isConnected]);
 
   return (
     <>
@@ -68,25 +74,31 @@ export default function NFTInfo({
                   </div>
                 </h2>
               </div>
-              <span>
-                {isOwner && (
-                  <button
-                    className="py-1 px-10 text-black bg-white rounded-lg hover:bg-slate-200 transition-all"
-                    onClick={() => setIsModalOpen(true)}
-                  >
-                    <span className="flex items-center justify-center text-lg font-semibold">
-                      Make Offer
-                    </span>
-                  </button>
-                )}
-              </span>
             </div>
+            <span>
+              {isWalletConnected && showOfferButton && (
+                <button
+                  className="py-1 px-10 text-black bg-white rounded-lg hover:bg-slate-200 transition-all"
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  <span className="flex items-center justify-center text-lg font-semibold">
+                    Make Offer
+                  </span>
+                </button>
+              )}
+            </span>
+
+            {!isWalletConnected && (
+              <h2 className="flex items-baseline italic text-xl">
+                Connect wallet to make offers
+              </h2>
+            )}
           </div>
         </div>
       </section>
 
       <section className="mt-16">
-        <OffersHistoryTable />
+        <OffersHistoryTable showOfferButton={showOfferButton} />
       </section>
     </>
   );
