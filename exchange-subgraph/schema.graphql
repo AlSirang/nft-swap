@@ -1,0 +1,24 @@
+type OfferRemoved @entity(immutable: true) {
+  id: Bytes!
+  offerId: BigInt! # uint256
+  fromId: BigInt! # uint256
+  toId: BigInt! # uint256
+  toCollection: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type SubmitOffer @entity(immutable: true) {
+  id: Bytes!
+  toId: BigInt! # uint256
+  fromId: BigInt! # uint256
+  offerIndex: BigInt! # uint256
+  msgValue: BigInt! # uint256
+  toCollection: Bytes! # address
+  fromCollection: Bytes! # address
+  from: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

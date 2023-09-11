@@ -1,0 +1,27 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: NFTExchange
+    network: sepolia
+    source:
+      address: "0xB489A1582b733CbC01B2Bb93Bf2F73AFF8cbe897"
+      abi: NFTExchange
+      startBlock: 4266565
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - OfferRemoved
+        - SubmitOffer
+      abis:
+        - name: NFTExchange
+          file: ./abis/NFTExchange.json
+      eventHandlers:
+        - event: OfferRemoved(uint256,uint256,uint256,indexed address)
+          handler: handleOfferRemoved
+        - event: SubmitOffer(indexed uint256,uint256,uint256,uint256,indexed address,address,address)
+          handler: handleSubmitOffer
+      file: ./src/nft-exchange.ts
