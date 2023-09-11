@@ -9,7 +9,7 @@ export const RemoveOffer = () => {
   const { address } = useAccount();
   const { data: walletClient } = useWalletClient();
 
-  const { incluesFrom, getAcceptOfferLogs } = useOfferHistoryProvider();
+  const { incluesFrom, getOffersInfo } = useOfferHistoryProvider();
 
   const removeOffer = () => {
     try {
@@ -36,12 +36,10 @@ export const RemoveOffer = () => {
 
           await publicClient.waitForTransactionReceipt({
             hash,
+            confirmations: 2,
           });
 
-          getAcceptOfferLogs(
-            _offerToRemove.toId.toString(),
-            _offerToRemove.toCollection as Address
-          );
+          getOffersInfo();
           resolve(hash);
         } catch (err) {
           console.log(err);

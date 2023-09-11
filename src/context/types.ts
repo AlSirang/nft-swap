@@ -1,12 +1,10 @@
 import { ISubmitOffer } from "@/types";
-import { Address } from "viem";
+import { FetchPolicy } from "@apollo/client";
 
 export interface IHistoryContext {
-  logs: ISubmitOffer[] | [];
+  offers: ISubmitOffer[] | [];
   isLoading: boolean;
-  getAcceptOfferLogs:
-    | (() => null)
-    | ((tokenId: string, toCollection: Address) => Promise<void>);
+  getOffersInfo: (fetchPolicy?: FetchPolicy) => Promise<void>;
   incluesFrom: (wallet: string) => ISubmitOffer[];
 }
 

@@ -9,7 +9,7 @@ export const OffersHistoryTable = ({
 }: {
   showOfferButton: boolean;
 }) => {
-  const { isLoading, logs } = useOfferHistoryProvider();
+  const { isLoading, offers } = useOfferHistoryProvider();
 
   return (
     <div className="container mx-auto p-6">
@@ -30,27 +30,27 @@ export const OffersHistoryTable = ({
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {logs.map((log, index) => (
+              {offers.map((offer, index) => (
                 <tr
                   key={index}
                   className="hover:bg-gray-50 text-black text-center whitespace-nowrap"
                 >
                   <td className="px-4 py-2 ">
-                    <Link href={`/profile/${log.from}`}>
-                      {shortenAddress(log.from)}
+                    <Link href={`/profile/${offer.from}`}>
+                      {shortenAddress(offer.from)}
                     </Link>
                   </td>
                   <td className="px-4 py-2 ">
-                    <Link href={`/collection/${log.fromCollection}`}>
-                      {shortenAddress(log.fromCollection)}
+                    <Link href={`/collection/${offer.fromCollection}`}>
+                      {shortenAddress(offer.fromCollection)}
                     </Link>
                   </td>
                   <td className="px-4 py-2 ">
-                    <Link href={`/${log.fromCollection}/${log.fromId}`}>
-                      {log.fromId}
+                    <Link href={`/${offer.fromCollection}/${offer.fromId}`}>
+                      {offer.fromId}
                     </Link>
                   </td>
-                  <td className="px-4 py-2 ">{log.msgValue} ETH</td>
+                  <td className="px-4 py-2 ">{offer.msgValue} ETH</td>
                   {showOfferButton && (
                     <td>
                       <button className="px-2 py-1 rounded-md border-2 border-black">

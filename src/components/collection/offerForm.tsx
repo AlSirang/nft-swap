@@ -13,14 +13,17 @@ import {
 } from "@/configs/contract.config";
 import { getContract } from "viem";
 import { useRouter } from "next/router";
+import { useOfferHistoryProvider } from "@/context/offersHistoryProvider";
 
 export default function OfferForm() {
+  const router = useRouter();
   const { address } = useAccount();
+  const publicClient = usePublicClient();
+  const { data: walletClient } = useWalletClient();
+  const { getOffersInfo, offers } = useOfferHistoryProvider();
+
   const [selected, setSelected] = useState<IWalletNFT | null>(null);
   const [inWallet, setInWallet] = useState<IWalletNFT[]>([]);
-  const { data: walletClient } = useWalletClient();
-  const publicClient = usePublicClient();
-  const router = useRouter();
 
   useEffect(() => {
     address &&
@@ -98,7 +101,10 @@ export default function OfferForm() {
 
         await publicClient.waitForTransactionReceipt({
           hash,
+          confirmations: 2,
         });
+
+        getOffersInfo();
 
         resolve(hash);
       } catch (err) {

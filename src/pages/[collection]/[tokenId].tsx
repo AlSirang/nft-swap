@@ -32,17 +32,17 @@ function NFTInfo({
     setIsModalOpen(false);
   };
 
-  const { incluesFrom, logs } = useOfferHistoryProvider();
+  const { incluesFrom, offers } = useOfferHistoryProvider();
   useEffect(() => {
-    if (address && owner)
-      setIsOwner(owner?.toLocaleLowerCase() !== address?.toLocaleLowerCase());
+    if (address) {
+      setIsOwner(owner?.toLocaleLowerCase() === address?.toLocaleLowerCase());
 
-    if (logs.length > 0 && address)
       setIsRejectOffer(incluesFrom(address).length > 0);
+    }
 
     setIsWalletConnected(isConnected);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address, owner, logs.length, isConnected]);
+  }, [address, owner, offers.length, isConnected]);
 
   return (
     <>
@@ -86,7 +86,7 @@ function NFTInfo({
               </div>
             </div>
             <span>
-              {isOwner && (
+              {isWalletConnected && !isRejectOffer && !isOwner && (
                 <button
                   className="py-1 px-10 text-black bg-white rounded-lg hover:bg-slate-200 transition-all"
                   onClick={() => setIsModalOpen(true)}
@@ -97,7 +97,7 @@ function NFTInfo({
                 </button>
               )}
 
-              {isRejectOffer && <RemoveOffer />}
+              {isWalletConnected && isRejectOffer && <RemoveOffer />}
             </span>
 
             {!isWalletConnected && (

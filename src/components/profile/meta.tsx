@@ -1,4 +1,4 @@
-import { useProfileProvider } from "@/providers/profileContextProvider";
+import { useProfileProvider } from "@/context/profileContextProvider";
 
 export const ProfileMeta = () => {
   const { totalNFTs, totalCollections } = useProfileProvider();

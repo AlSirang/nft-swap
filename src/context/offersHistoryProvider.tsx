@@ -1,19 +1,15 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { Address, decodeEventLog, parseAbiItem, parseEther } from "viem";
+import { Address } from "viem";
+import { FetchPolicy, useApolloClient } from "@apollo/client";
 import { useRouter } from "next/router";
-import { usePublicClient } from "wagmi";
-import {
-  DEPLOYED_AT_BLOCK,
-  exchnageABI,
-  exchnageAddress,
-} from "@/configs/contract.config";
-import { ISubmitOffer } from "@/types";
+import { GET_Removed_Offers, GET_Submit_Offers } from "@/utils/gqlQeries";
 import { IHistoryContext } from "./types";
+import { ISubmitOffer } from "@/types";
 
 const OffersHistoryContext = createContext<IHistoryContext>({
-  logs: [],
+  offers: [],
   isLoading: true,
-  getAcceptOfferLogs: () => null,
+  getOffersInfo: (fetchPolicy?: FetchPolicy) => Promise.resolve(),
   incluesFrom: () => [],
 });
 
@@ -22,68 +18,60 @@ interface IProps {
 }
 
 export const OffersHistoryProvider = ({ children }: IProps) => {
-  const publicClient = usePublicClient();
   //** hooks
   const router = useRouter();
-  //** State
-  const [logs, setLogs] = useState<ISubmitOffer[]>([]);
+  const apolloClient = useApolloClient();
 
+  //** State
+  const [offers, setOffers] = useState<ISubmitOffer[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const getAcceptOfferLogs = async (tokenId: string, toCollection: Address) => {
+  const getOffersInfo = async (fetchPolicy: FetchPolicy | undefined) => {
     try {
-      const [submitOfferLogs, removeOfferLogs] = await Promise.all([
-        publicClient.getLogs({
-          address: exchnageAddress,
-          event: parseAbiItem(
-            "event SubmitOffer(uint256 indexed toId, uint256, uint256, uint256, address indexed toCollection, address, address)"
-          ),
-          args: {
-            toId: BigInt(tokenId),
-            toCollection: toCollection,
-          },
-          fromBlock: BigInt(DEPLOYED_AT_BLOCK),
-        }),
-        publicClient.getLogs({
-          address: exchnageAddress,
-          event: parseAbiItem(
-            "event SubmitOffer(uint256 indexed toId, uint256, uint256, uint256, address indexed toCollection, address, address)"
-          ),
-          args: {
-            toId: BigInt(tokenId),
-            toCollection: toCollection,
-          },
-          fromBlock: BigInt(DEPLOYED_AT_BLOCK),
-        }),
-      ]);
+      setIsLoading(true);
 
-      const decodedLogs = submitOfferLogs.map((log) => {
-        const { args } = decodeEventLog({
-          abi: exchnageABI,
-          eventName: "SubmitOffer",
-          data: log.data,
-          topics: log.topics,
-        });
+      const toCollection = router.query.collection as Address;
+      const toId = router.query.tokenId as string;
 
-        return {
-          // @ts-ignore
-          toId: parseInt(args.toId),
-          // @ts-ignore
-          fromId: parseInt(args.fromId),
-          // @ts-ignore
-          msgValue: parseInt(parseEther(args.msgValue || "0").toString()),
-          // @ts-ignore
-          fromCollection: args.fromCollection,
-          // @ts-ignore
-          toCollection: args.toCollection,
-          // @ts-ignore
-          from: args.from,
-          // @ts-ignore
-          offerIndex: parseInt(args.offerIndex),
-        };
+      const [{ data: _submittedOffers }, { data: removedOffers }] =
+        await Promise.all([
+          apolloClient.query({
+            query: GET_Submit_Offers,
+            variables: {
+              toId,
+              toCollection,
+            },
+            fetchPolicy: fetchPolicy || "network-only",
+          }),
+          apolloClient.query({
+            query: GET_Removed_Offers,
+            variables: {
+              toId,
+              toCollection,
+            },
+            fetchPolicy: fetchPolicy || "network-only",
+          }),
+        ]);
+
+      if (!_submittedOffers) return;
+      const submittedOffersRaw = _submittedOffers.submitOffers;
+      if (!removedOffers) return setOffers(submittedOffersRaw);
+      const offerRemoveds = removedOffers.offerRemoveds;
+
+      const submittedOffers: ISubmitOffer[] = [];
+
+      submittedOffersRaw.forEach((submittedOffer: ISubmitOffer) => {
+        let isRemoved = false;
+        for (const removedOffer of offerRemoveds)
+          if (submittedOffer.offerIndex === removedOffer.offerId) {
+            isRemoved = true;
+            break;
+          }
+
+        if (!isRemoved) submittedOffers.push(submittedOffer);
       });
 
-      setLogs(decodedLogs);
+      setOffers(submittedOffers);
     } catch (err) {
       console.log(err);
     }
@@ -92,23 +80,24 @@ export const OffersHistoryProvider = ({ children }: IProps) => {
   };
 
   const incluesFrom = (wallet: string) => {
-    return logs.filter(
-      (log) => log.from.toLowerCase() === wallet.toLowerCase()
+    return offers.filter(
+      (offer) => offer.from.toLowerCase() === wallet.toLowerCase()
     );
   };
 
   useEffect(() => {
-    const toCollection = router.query.collection as Address;
-
-    const tokenId = router.query.tokenId as string;
-
-    if (publicClient) getAcceptOfferLogs(tokenId, toCollection);
+    getOffersInfo("cache-first");
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [publicClient, router.query]);
+  }, [router.asPath]);
 
   return (
     <OffersHistoryContext.Provider
-      value={{ logs, isLoading, getAcceptOfferLogs, incluesFrom }}
+      value={{
+        offers,
+        isLoading,
+        getOffersInfo,
+        incluesFrom,
+      }}
     >
       {children}
     </OffersHistoryContext.Provider>

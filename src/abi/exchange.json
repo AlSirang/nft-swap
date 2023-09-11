@@ -19,31 +19,12 @@
         "internalType": "uint256",
         "name": "toId",
         "type": "uint256"
-      }
-    ],
-    "name": "OfferAccept",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "offerId",
-        "type": "uint256"
       },
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "fromId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "toId",
-        "type": "uint256"
+        "indexed": true,
+        "internalType": "address",
+        "name": "toCollection",
+        "type": "address"
       }
     ],
     "name": "OfferRemoved",

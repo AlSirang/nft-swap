@@ -26,8 +26,8 @@ export interface ISubmitOffer {
   fromCollection: string;
   toCollection: string;
   from: string;
-  toId: number;
-  fromId: number;
-  msgValue: number;
-  offerIndex: number;
+  toId: number | string;
+  fromId: number | string;
+  msgValue: number | string;
+  offerIndex: number | string;
 }

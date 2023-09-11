@@ -1,7 +1,6 @@
 import { useAccount } from "wagmi";
+import { useProfileProvider } from "@/context/profileContextProvider";
 import { Card } from "../card/main";
-import { useEffect } from "react";
-import { useProfileProvider } from "@/providers/profileContextProvider";
 
 export const Collections: React.FunctionComponent = () => {
   const { address } = useAccount();
