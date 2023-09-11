@@ -36,8 +36,12 @@ contract NFTExchange {
         address from
     );
 
-    event OfferAccept(uint256 offerId, uint256 fromId, uint256 toId);
-    event OfferRemoved(uint256 offerId, uint256 fromId, uint256 toId);
+    event OfferRemoved(
+        uint256 offerId,
+        uint256 fromId,
+        uint256 toId,
+        address indexed toCollection
+    );
 
     //*************************************//
     //************* Functions *************//
@@ -122,7 +126,12 @@ contract NFTExchange {
             require(success, "ETH transfer failed");
         }
 
-        emit OfferAccept(_offerIndex, _offer.fromId, _offer.toId);
+        emit OfferRemoved(
+            _offerIndex,
+            _offer.fromId,
+            _offer.toId,
+            _offer.toCollection
+        );
     }
 
     function removeOffer(uint256 _offerIndex) external {
@@ -148,6 +157,11 @@ contract NFTExchange {
             require(success, "ETH transfer failed");
         }
 
-        emit OfferRemoved(_offerIndex, _offer.fromId, _offer.toId);
+        emit OfferRemoved(
+            _offerIndex,
+            _offer.fromId,
+            _offer.toId,
+            _offer.toCollection
+        );
     }
 }
