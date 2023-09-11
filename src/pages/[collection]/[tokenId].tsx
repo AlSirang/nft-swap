@@ -7,9 +7,13 @@ import { extractCollectionInfo } from "@/utils/functions";
 import { collectionAvatar } from "@/utils/imgSrc";
 import { OfferModal } from "@/components/collection/offerModal";
 import { OffersHistoryTable } from "@/components/collection/offersHistoryTable";
-import { exchnageAddress } from "@/configs/contract.config";
+import {
+  OffersHistoryProvider,
+  useOfferHistoryProvider,
+} from "@/context/offersHistoryProvider";
+import { RemoveOffer } from "@/components/collection/removeOffer";
 
-export default function NFTInfo({
+function NFTInfo({
   image,
   title,
   symbol,
@@ -18,21 +22,27 @@ export default function NFTInfo({
   owner,
 }: ICollectionPageProps) {
   const { isConnected, address } = useAccount();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showOfferButton, setShowOfferButton] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
   const [isWalletConnected, setIsWalletConnected] = useState(true);
+  const [isRejectOffer, setIsRejectOffer] = useState(false);
+
   const onModalClose = () => {
     setIsModalOpen(false);
   };
 
+  const { incluesFrom, logs } = useOfferHistoryProvider();
   useEffect(() => {
     if (address && owner)
-      setShowOfferButton(
-        owner?.toLocaleLowerCase() !== address?.toLocaleLowerCase()
-      );
+      setIsOwner(owner?.toLocaleLowerCase() !== address?.toLocaleLowerCase());
+
+    if (logs.length > 0 && address)
+      setIsRejectOffer(incluesFrom(address).length > 0);
 
     setIsWalletConnected(isConnected);
-  }, [address, owner, isConnected]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [address, owner, logs.length, isConnected]);
 
   return (
     <>
@@ -76,7 +86,7 @@ export default function NFTInfo({
               </div>
             </div>
             <span>
-              {isWalletConnected && showOfferButton && (
+              {isOwner && (
                 <button
                   className="py-1 px-10 text-black bg-white rounded-lg hover:bg-slate-200 transition-all"
                   onClick={() => setIsModalOpen(true)}
@@ -86,6 +96,8 @@ export default function NFTInfo({
                   </span>
                 </button>
               )}
+
+              {isRejectOffer && <RemoveOffer />}
             </span>
 
             {!isWalletConnected && (
@@ -98,9 +110,17 @@ export default function NFTInfo({
       </section>
 
       <section className="mt-16">
-        <OffersHistoryTable showOfferButton={showOfferButton} />
+        <OffersHistoryTable showOfferButton={isOwner} />
       </section>
     </>
+  );
+}
+
+export default function PageWrapper(props: ICollectionPageProps) {
+  return (
+    <OffersHistoryProvider>
+      <NFTInfo {...props} />
+    </OffersHistoryProvider>
   );
 }
 

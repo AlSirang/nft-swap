@@ -1,13 +1,7 @@
-// MyContextTypes.ts
 import { getAllCollections } from "@/alchemy-core/getAllCollections";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useAccount } from "wagmi";
-
-interface IProfileContext {
-  totalNFTs: string | number | undefined;
-  totalCollections: string | number | undefined;
-  collections: any[] | undefined;
-}
+import { IProfileContext } from "./types";
 
 const ProfileContext = createContext<IProfileContext>({
   totalNFTs: 0,

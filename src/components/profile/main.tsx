@@ -1,7 +1,7 @@
 import { useAccount } from "wagmi";
 import { profileAvatar } from "@/utils/imgSrc";
 import { shortenAddress } from "@/utils/functions";
-import { ProfileContextProvider } from "@/providers/profileContextProvider";
+import { ProfileContextProvider } from "@/context/profileContextProvider";
 import { Collections } from "./collections";
 import { ProfileMeta } from "./meta";
 
