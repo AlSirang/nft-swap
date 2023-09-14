@@ -4,7 +4,7 @@ import Link from "next/link";
 export const Card = ({ title, image, contract, tokenId }: ICardProps) => {
   return (
     <section className="bg-[#fffff3] w-full sm:max-w-xs p-3.5 rounded-2xl bg-card-blue text-soft-blue text-lg font-normal shadow-xl">
-      <div className="block relative rounded-md overflow-hidden mb-6">
+      <div className="border-2 relative rounded-md overflow-hidden mb-6">
         <picture>
           <img src={image} alt="Equilibrium" />
         </picture>
