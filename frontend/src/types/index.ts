@@ -4,3 +4,4 @@ export * from "./Pages";
 export * from "./ICollection";
 export * from "./Providers";
 export * from "./IProfileState";
+export * from "./ICardProps";
