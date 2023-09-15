@@ -20,7 +20,7 @@ export const EtherscanLink = ({
       target="_blank"
       className={classNames(
         className,
-        "text-xl font-semibold flex gap-1 items-center hover:underline transition-all"
+        "text-xl font-semibold flex gap-1 items-center"
       )}
     >
       {children}

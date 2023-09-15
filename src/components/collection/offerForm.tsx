@@ -105,15 +105,14 @@ export default function OfferForm({ onClose = () => {} }) {
         });
 
         getOffersInfo();
-
         resolve(hash);
       } catch (err) {
         toast.dismiss(apporveToastId.current);
         // @ts-ignore
         reject(err?.shortMessage);
-
-        onClose();
       }
+
+      onClose();
     });
 
     toast.promise(txPromise, {

@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import Link from "next/link";
 import { useAccount } from "wagmi";
-import { shortenAddress } from "@/utils/functions";
 import { OfferModal } from "@/components/collection/offerModal";
 import { OffersHistoryTable } from "@/components/collection/offersHistoryTable";
 import { RemoveOffer } from "@/components/collection/removeOffer";
 import { EtherscanLink } from "@/components/etherscanLink";
 import { useOfferHistoryProvider } from "@/context/offersHistoryProvider";
+import { shortenAddress } from "@/utils/functions";
 import { collectionAvatar } from "@/utils/imgSrc";
 import { ICollectionPageProps } from "@/types";
 
@@ -23,7 +23,6 @@ export function NFTInfo(props: ICollectionPageProps) {
   } = props;
 
   const { isConnected, address } = useAccount();
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const [isWalletConnected, setIsWalletConnected] = useState(true);
@@ -33,20 +32,22 @@ export function NFTInfo(props: ICollectionPageProps) {
     setIsModalOpen(false);
   };
 
-  const { incluesFrom, setOffers } = useOfferHistoryProvider();
+  const { incluesFrom, setOffers, offers } = useOfferHistoryProvider();
+
+  useLayoutEffect(() => {
+    setOffers(allOffers);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allOffers.length]);
+
   useEffect(() => {
     if (address) {
       setIsOwner(owner?.toLocaleLowerCase() === address?.toLocaleLowerCase());
 
       setIsRejectOffer(incluesFrom(address).length > 0);
     }
-
     setIsWalletConnected(isConnected);
-
-    setOffers(allOffers);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address, owner, allOffers.length, isConnected]);
-
+  }, [address, owner, offers.length, isConnected]);
   return (
     <>
       <OfferModal isOpen={isModalOpen} onClose={onModalClose} />
@@ -85,7 +86,7 @@ export function NFTInfo(props: ICollectionPageProps) {
                     </EtherscanLink>
                     <Link
                       href={`/collection/${contract}`}
-                      className="hover:underline transition-all"
+                      className="hover:underline"
                     >
                       {name}({symbol})
                     </Link>
