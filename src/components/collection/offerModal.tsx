@@ -59,7 +59,7 @@ export const OfferModal = ({ isOpen = false, onClose = () => {} }) => {
                       </span>
                     </div>
                   )}
-                  {isConnected && <OfferForm />}
+                  {isConnected && <OfferForm onClose={onClose} />}
                 </div>
               </Dialog.Panel>
             </Transition.Child>

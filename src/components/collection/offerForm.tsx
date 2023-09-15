@@ -11,11 +11,11 @@ import {
   exchnageABI,
   exchnageAddress,
 } from "@/configs/contract.config";
-import { getContract } from "viem";
+import { getContract, parseEther } from "viem";
 import { useRouter } from "next/router";
 import { useOfferHistoryProvider } from "@/context/offersHistoryProvider";
 
-export default function OfferForm() {
+export default function OfferForm({ onClose = () => {} }) {
   const router = useRouter();
   const { address } = useAccount();
   const publicClient = usePublicClient();
@@ -42,7 +42,7 @@ export default function OfferForm() {
     const txPromise = new Promise(async (resolve, reject) => {
       try {
         const data = new FormData(event.currentTarget);
-        const ethPrice = data.get("ethPrice");
+        const ethPrice = data.get("ethPrice") || 0;
         const fromCollection = selected?.contract; // offered collection
         const fromId = selected?.tokenId; // offered NFT
 
@@ -92,12 +92,12 @@ export default function OfferForm() {
         });
 
         // @ts-ignore
-        const hash = await exchangeContract.write.createOffer([
-          fromCollection,
-          toCollection,
-          fromId,
-          toId,
-        ]);
+        const hash = await exchangeContract.write.createOffer(
+          [fromCollection, toCollection, fromId, toId],
+          {
+            value: parseEther(ethPrice.toString()),
+          }
+        );
 
         await publicClient.waitForTransactionReceipt({
           hash,
@@ -111,6 +111,8 @@ export default function OfferForm() {
         toast.dismiss(apporveToastId.current);
         // @ts-ignore
         reject(err?.shortMessage);
+
+        onClose();
       }
     });
 
