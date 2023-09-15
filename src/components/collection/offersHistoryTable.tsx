@@ -2,7 +2,13 @@ import React, { useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { toast } from "react-hot-toast";
-import { useAccount, usePublicClient, useWalletClient } from "wagmi";
+import {
+  deserialize,
+  useAccount,
+  usePublicClient,
+  useWalletClient,
+} from "wagmi";
+import { formatEther, getContract } from "viem";
 import { shortenAddress } from "@/utils/functions";
 import { useOfferHistoryProvider } from "@/context/offersHistoryProvider";
 import {
@@ -10,7 +16,6 @@ import {
   exchnageABI,
   exchnageAddress,
 } from "@/configs/contract.config";
-import { getContract } from "viem";
 
 export const OffersHistoryTable = ({
   showOfferButton,
@@ -116,21 +121,32 @@ export const OffersHistoryTable = ({
                 className="hover:bg-gray-50 text-black text-center whitespace-nowrap"
               >
                 <td className="px-4 py-2 ">
-                  <Link href={`/profile/${offer.from}`}>
+                  <Link
+                    href={`/profile/${offer.from}`}
+                    className="hover:underline transition-all"
+                  >
                     {shortenAddress(offer.from)}
                   </Link>
                 </td>
                 <td className="px-4 py-2 ">
-                  <Link href={`/collection/${offer.fromCollection}`}>
+                  <Link
+                    href={`/collection/${offer.fromCollection}`}
+                    className="hover:underline transition-all"
+                  >
                     {shortenAddress(offer.fromCollection)}
                   </Link>
                 </td>
                 <td className="px-4 py-2 ">
-                  <Link href={`/${offer.fromCollection}/${offer.fromId}`}>
+                  <Link
+                    href={`/${offer.fromCollection}/${offer.fromId}`}
+                    className="hover:underline transition-all"
+                  >
                     {offer.fromId}
                   </Link>
                 </td>
-                <td className="px-4 py-2 ">{offer.msgValue} ETH</td>
+                <td className="px-4 py-2 ">
+                  {formatEther(deserialize(offer.msgValue as string))} ETH
+                </td>
                 {showOfferButton && (
                   <td>
                     <button
