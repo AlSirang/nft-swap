@@ -5,6 +5,7 @@ import Head from "next/head";
 import { Toaster } from "react-hot-toast";
 import "@/styles/globals.css";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { Footer } from "@/components/footer";
 
 export const apolloClient = new ApolloClient({
   uri: "https://api.studio.thegraph.com/query/52562/nftexchange/v1",
@@ -25,6 +26,8 @@ export default function App({ Component, pageProps }: AppProps) {
           <Component {...pageProps} />
 
           <Toaster position="top-center" />
+
+          <Footer />
         </ApolloProvider>
       </RainbowKitProvider>
     </>

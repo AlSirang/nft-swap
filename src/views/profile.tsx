@@ -8,7 +8,7 @@ import { profileAvatar } from "@/utils/imgSrc";
 import { IProfileContext } from "@/types";
 
 export const Profile = (props: IProfileContext) => {
-  const { address, collections, totalCollections, totalNFTs } = props;
+  const { account, collections, totalCollections, totalNFTs } = props;
 
   const { setProfileInfo } = useProfileProvider();
   useEffect(() => {
@@ -39,9 +39,9 @@ export const Profile = (props: IProfileContext) => {
               <div className="flex justify-center">
                 <EtherscanLink
                   className="text-black"
-                  path={`address/${address}`}
+                  path={`address/${account}`}
                 >
-                  {shortenAddress(address)}
+                  {shortenAddress(account)}
                 </EtherscanLink>
               </div>
             </div>
