@@ -3,7 +3,7 @@ import { Address } from "viem";
 import { FetchPolicy } from "@apollo/client";
 import { useRouter } from "next/router";
 import { getOffers } from "@/core/getOffers";
-import { ISubmitOffer, IHistoryContext } from "@/types";
+import { ISubmitOffer, IHistoryContext, IContext } from "@/types";
 
 const OffersHistoryContext = createContext<IHistoryContext>({
   offers: [],
@@ -12,11 +12,7 @@ const OffersHistoryContext = createContext<IHistoryContext>({
   setOffers: () => {},
 });
 
-interface IProps {
-  children: React.ReactNode;
-}
-
-export const OffersHistoryProvider = ({ children }: IProps) => {
+export const OffersHistoryProvider = ({ children }: IContext) => {
   //** hooks
   const router = useRouter();
 

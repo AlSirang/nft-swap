@@ -1,40 +1,25 @@
-import { getAllCollections } from "@/core/getAllCollections";
-import { createContext, useContext, useEffect, useState } from "react";
-import { useAccount } from "wagmi";
-import { IProfileContext } from "./types";
+import { createContext, useContext, useState } from "react";
+import { IContext, IProfileContext } from "@/types";
+import { IProfileState } from "@/types";
 
 const ProfileContext = createContext<IProfileContext>({
   totalNFTs: 0,
   totalCollections: 0,
   collections: [],
+  setProfileInfo: () => {},
 });
 
-export const ProfileContextProvider: React.FunctionComponent<{
-  children: React.ReactNode;
-}> = ({ children }) => {
-  const { address } = useAccount();
-  const [state, setState] = useState<IProfileContext>({
+export const ProfileContextProvider = ({ children }: IContext) => {
+  const [profileInfo, setProfileInfo] = useState<IProfileState>({
     totalCollections: 0,
     totalNFTs: 0,
     collections: [],
   });
 
-  useEffect(() => {
-    if (address)
-      getAllCollections(address).then((response) => {
-        const { totalNFTs, collections, totalCollections } = response;
-
-        setState((p) => ({
-          ...p,
-          totalNFTs,
-          totalCollections,
-          collections,
-        }));
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address]);
   return (
-    <ProfileContext.Provider value={state}>{children}</ProfileContext.Provider>
+    <ProfileContext.Provider value={{ ...profileInfo, setProfileInfo }}>
+      {children}
+    </ProfileContext.Provider>
   );
 };
 

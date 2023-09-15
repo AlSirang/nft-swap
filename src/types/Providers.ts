@@ -1,6 +1,11 @@
-import { Dispatch, SetStateAction } from "react";
-import { ISubmitOffer } from "@/types";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 import { FetchPolicy } from "@apollo/client";
+import { ISubmitOffer } from "./ISubmitOffer";
+import { IProfileState } from "./IProfileState";
+
+export interface IContext {
+  children: ReactNode;
+}
 
 export interface IHistoryContext {
   offers: ISubmitOffer[] | [];
@@ -9,8 +14,6 @@ export interface IHistoryContext {
   setOffers: Dispatch<SetStateAction<ISubmitOffer[]>> | (() => {});
 }
 
-export interface IProfileContext {
-  totalNFTs: string | number | undefined;
-  totalCollections: string | number | undefined;
-  collections: any[] | undefined;
+export interface IProfileContext extends IProfileState {
+  setProfileInfo: Dispatch<SetStateAction<IProfileState>> | (() => {});
 }

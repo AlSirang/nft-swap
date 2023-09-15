@@ -7,3 +7,9 @@ export interface ICollectionPageProps extends ICardProps {
 }
 
 export interface IHomePageProps extends ICardProps {}
+export interface IProfilePage {
+  totalNFTs: string | number | undefined;
+  address?: string | undefined;
+  totalCollections: string | number | undefined;
+  collections: any[] | undefined;
+}
