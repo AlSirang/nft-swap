@@ -22,12 +22,17 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <RainbowKitProvider>
         <ApolloProvider client={apolloClient}>
-          <Header />
-          <Component {...pageProps} />
+          <main className="flex flex-col min-h-screen">
+            <div>
+              <Header />
+            </div>
+            <div className="flex-grow">
+              <Component {...pageProps} />
+            </div>
+            <Toaster position="top-center" />
 
-          <Toaster position="top-center" />
-
-          <Footer />
+            <Footer />
+          </main>
         </ApolloProvider>
       </RainbowKitProvider>
     </>

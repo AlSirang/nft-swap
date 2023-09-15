@@ -21,8 +21,8 @@ const { chains, publicClient } = configureChains(
 );
 
 const { connectors } = getDefaultWallets({
-  appName: "NFT Exchange",
-  projectId: "YOUR_PROJECT_ID",
+  appName: "NFT Swap",
+  projectId: "3828bedc82f5ba0e923c413da3250b1a",
   chains,
 });
 
