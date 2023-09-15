@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import { NextPageContext } from "next";
+import Link from "next/link";
 import { useAccount } from "wagmi";
 import { alchemy } from "@/configs/alchemy.config";
-import { ICollectionPageProps } from "@/types";
 import { extractCollectionInfo, shortenAddress } from "@/utils/functions";
-import { collectionAvatar } from "@/utils/imgSrc";
 import { OfferModal } from "@/components/collection/offerModal";
 import { OffersHistoryTable } from "@/components/collection/offersHistoryTable";
+import { RemoveOffer } from "@/components/collection/removeOffer";
+import { EtherscanLink } from "@/components/etherscanLink";
 import {
   OffersHistoryProvider,
   useOfferHistoryProvider,
 } from "@/context/offersHistoryProvider";
-import { RemoveOffer } from "@/components/collection/removeOffer";
-import { EtherscanLink } from "@/components/etherscanLink";
-import Link from "next/link";
+import { collectionAvatar } from "@/utils/imgSrc";
+import { ICollectionPageProps } from "@/types";
 
 function NFTInfo({
   contract,
