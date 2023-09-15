@@ -1,32 +1,28 @@
 import { NextPageContext } from "next";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
 import { EtherscanLink } from "@/components/etherscanLink";
+import { Card } from "@/components/card/main";
 import { alchemy } from "@/configs/alchemy.config";
 import { extractCollectionInfo, shortenAddress } from "@/utils/functions";
-import { ICollectionPageProps } from "@/types";
-
 import { collectionAvatar } from "@/utils/imgSrc";
-import { Card } from "@/components/card/main";
+import { ICollectionInfo, ICollectionPage } from "@/types";
 
-export default function Collection({
-  nfts,
-  pageKey,
-}: {
-  nfts: ICollectionPageProps[];
-  pageKey: string | null;
-}) {
-  const [collectionInfo, setCollectionInfo] = useState<{
-    name: string | undefined;
-    symbol: string | undefined;
-    contract: string | undefined;
-  }>({
+export default function Collection({ nfts, pageKey }: ICollectionPage) {
+  const router = useRouter();
+  const isComponentComputed = useRef(false);
+  const [collectionInfo, setCollectionInfo] = useState<ICollectionInfo>({
     name: "",
     symbol: "",
     contract: "",
   });
 
+  const lastLength = useRef(0);
   useEffect(() => {
-    if (nfts.length > 0) {
+    if (nfts.length > 0 && !isComponentComputed.current) {
+      lastLength.current = nfts.length;
+      isComponentComputed.current = true;
+
       const collection = nfts[0];
       setCollectionInfo({
         name: collection.name,
@@ -38,6 +34,16 @@ export default function Collection({
 
   if (nfts.length === 0) return <h2>Collection Not Found</h2>;
 
+  const onNextPage = () => {
+    try {
+      const url = router.asPath.split("?")[0];
+
+      router.push(`${url}?next=${pageKey}`);
+    } catch (err) {
+      console.log("onNextPageERR: ", err);
+    }
+  };
+
   return (
     <section className="container mx-auto mt-10 px-4 relative">
       <div className="relative flex flex-col min-w-0 break-words bg-[#fffff3] w-full mb-6 shadow-xl rounded-lg">
@@ -47,7 +53,7 @@ export default function Collection({
               <img
                 alt="collection avatar"
                 src={collectionAvatar}
-                className="ring-2 ring-[#3f3e3e5e] ring-inset rounded-xl h-auto align-middle border-none w-[150px]"
+                className="ring-2 ring-[#3f3e3e5e] rounded-xl h-auto align-middle border-none w-[150px]"
               />
             </picture>
           </div>
@@ -76,6 +82,8 @@ export default function Collection({
           <Card key={index} {...nft} />
         ))}
       </div>
+
+      <div>{pageKey && <button onClick={onNextPage}>Next Page</button>}</div>
     </section>
   );
 }
@@ -84,9 +92,11 @@ export const getServerSideProps = async (context: NextPageContext) => {
   const { collection, next } = context.query;
 
   try {
-    const options = {
+    const options: { pageSize: number; pageKey?: string | undefined } = {
       pageSize: 10,
     };
+
+    if (next) options.pageKey = next as string;
     const { nfts, pageKey } = await alchemy.nft.getNftsForContract(
       collection as string,
       options

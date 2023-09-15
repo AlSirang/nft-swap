@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import { useAccount, usePublicClient, useWalletClient } from "wagmi";
 import { Listbox, Transition } from "@headlessui/react";
-import { getAllCollections } from "@/alchemy-core/getAllCollections";
+import { getAllCollections } from "@/core/getAllCollections";
 import { CheckIcon, ChevronIcon } from "@/svgIcons";
 import { IWalletNFT } from "@/types";
 import { toast } from "react-hot-toast";

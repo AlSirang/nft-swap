@@ -1,4 +1,4 @@
-import { getAllCollections } from "@/alchemy-core/getAllCollections";
+import { getAllCollections } from "@/core/getAllCollections";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { IProfileContext } from "./types";
