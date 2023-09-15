@@ -7,10 +7,12 @@ export const EtherscanLink = ({
   path,
   className = "",
   children,
+  light = false,
 }: {
   path: string;
   children: React.ReactNode;
   className?: string | undefined;
+  light?: boolean;
 }) => {
   return (
     <a
@@ -22,7 +24,7 @@ export const EtherscanLink = ({
       )}
     >
       {children}
-      <EtherscanIcon />
+      <EtherscanIcon light={light} />
     </a>
   );
 };

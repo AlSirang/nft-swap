@@ -80,7 +80,7 @@ function NFTInfo({
                   </picture>
 
                   <div>
-                    <EtherscanLink path={`address/${contract}`}>
+                    <EtherscanLink path={`address/${contract}`} light>
                       {shortenAddress(contract)}
                     </EtherscanLink>
                     <Link
