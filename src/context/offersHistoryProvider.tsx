@@ -73,7 +73,7 @@ export const OffersHistoryProvider = ({ children }: IProps) => {
 
       setOffers(submittedOffers);
     } catch (err) {
-      console.log(err);
+      console.log("getOffersInfo: ", err);
     }
 
     setIsLoading(false);

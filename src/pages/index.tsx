@@ -33,7 +33,6 @@ export const getServerSideProps = async () => {
       props: extractCollectionInfo(nfts[0]),
     };
   } catch (err) {
-    console.log(err);
     return {
       props: {
         ...defaultPlayload,

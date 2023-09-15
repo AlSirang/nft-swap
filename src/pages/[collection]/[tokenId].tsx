@@ -147,7 +147,6 @@ export const getServerSideProps = async (context: NextPageContext) => {
       props: { ...extractCollectionInfo(metadata), owner: owners[0] },
     };
   } catch (err) {
-    console.log(err);
     return {
       props: {
         ...defaultPlayload,

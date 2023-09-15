@@ -20,7 +20,7 @@ export default function OfferForm() {
   const { address } = useAccount();
   const publicClient = usePublicClient();
   const { data: walletClient } = useWalletClient();
-  const { getOffersInfo, offers } = useOfferHistoryProvider();
+  const { getOffersInfo } = useOfferHistoryProvider();
 
   const [selected, setSelected] = useState<IWalletNFT | null>(null);
   const [inWallet, setInWallet] = useState<IWalletNFT[]>([]);
