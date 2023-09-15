@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAccount } from "wagmi";
 import { OfferModal } from "@/components/collection/offerModal";
@@ -34,7 +34,7 @@ export function NFTInfo(props: ICollectionPageProps) {
 
   const { incluesFrom, setOffers, offers } = useOfferHistoryProvider();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setOffers(allOffers);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allOffers.length]);
