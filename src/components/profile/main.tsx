@@ -4,6 +4,7 @@ import { shortenAddress } from "@/utils/functions";
 import { ProfileContextProvider } from "@/context/profileContextProvider";
 import { Collections } from "./collections";
 import { ProfileMeta } from "./meta";
+import { EtherscanLink } from "../etherscanLink";
 
 export default function Profile() {
   const { isConnected, address } = useAccount();
@@ -17,28 +18,30 @@ export default function Profile() {
                 <img
                   alt="profile avatar"
                   src={profileAvatar}
-                  className="shadow-xl rounded-full h-auto align-middle border-none w-[150px]"
+                  className="ring-2 ring-[#3f3e3e5e] ring-inset rounded-xl h-auto align-middle border-none w-[150px]"
                 />
               </picture>
             </div>
 
             <div className="text-center mt-5 mb-4">
               <div className="flex justify-center mb-3">
-                <h2 className="text-xl text-black font-semibold">
-                  {isConnected && shortenAddress(address)}
-                </h2>
+                <div className="flex justify-center">
+                  <EtherscanLink
+                    className="text-black"
+                    path={`address/${address}`}
+                  >
+                    {isConnected && shortenAddress(address)}
+                  </EtherscanLink>
+                </div>
               </div>
               <ProfileMeta />
             </div>
           </div>
         </div>
+        <hr className="m-auto mt-10" />
+
+        <Collections />
       </section>
-
-      <div className="px-10">
-        <hr className="max-w-[105rem] m-auto mt-10" />
-      </div>
-
-      <Collections />
     </ProfileContextProvider>
   );
 }

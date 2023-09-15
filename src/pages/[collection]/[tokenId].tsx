@@ -3,7 +3,7 @@ import { NextPageContext } from "next";
 import { useAccount } from "wagmi";
 import { alchemy } from "@/configs/alchemy.config";
 import { ICollectionPageProps } from "@/types";
-import { extractCollectionInfo } from "@/utils/functions";
+import { extractCollectionInfo, shortenAddress } from "@/utils/functions";
 import { collectionAvatar } from "@/utils/imgSrc";
 import { OfferModal } from "@/components/collection/offerModal";
 import { OffersHistoryTable } from "@/components/collection/offersHistoryTable";
@@ -12,8 +12,11 @@ import {
   useOfferHistoryProvider,
 } from "@/context/offersHistoryProvider";
 import { RemoveOffer } from "@/components/collection/removeOffer";
+import { EtherscanLink } from "@/components/etherscanLink";
+import Link from "next/link";
 
 function NFTInfo({
+  contract,
   image,
   title,
   symbol,
@@ -77,10 +80,15 @@ function NFTInfo({
                   </picture>
 
                   <div>
-                    <h2 className="font-semibold">Collection</h2>
-                    <p>
+                    <EtherscanLink path={`address/${contract}`}>
+                      {shortenAddress(contract)}
+                    </EtherscanLink>
+                    <Link
+                      href={`/collection/${contract}`}
+                      className="hover:underline transition-all"
+                    >
                       {name}({symbol})
-                    </p>
+                    </Link>
                   </div>
                 </h2>
               </div>

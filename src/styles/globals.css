@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -19,4 +21,102 @@ body {
 .scrollbar-hide {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+}
+
+.cards-grid {
+  --template-column-gutters: 8px;
+  --template-columns: 1;
+  --template-column-compact-multiplier: 1;
+  --template-reduced-columns: 0;
+  --template-reduced-columns-multiplier: 1;
+  display: grid;
+  gap: var(--template-column-gutters);
+  grid-auto-rows: minmax(0px, 1fr);
+  grid-template-columns: repeat(
+    calc(
+      var(--template-columns) -
+        (
+          var(--template-reduced-columns) *
+            var(--template-reduced-columns-multiplier)
+        )
+    ),
+    minmax(0, 1fr)
+  );
+}
+
+@media (min-width: 30rem) {
+  .cards-grid {
+    --template-columns: 2;
+  }
+}
+@media (min-width: 50rem) {
+  .cards-grid {
+    --template-columns: 4;
+  }
+}
+@media (min-width: 60rem) {
+  .cards-grid {
+    --template-columns: 5;
+  }
+}
+
+@media (min-width: 768px) {
+  .cards-grid {
+    --template-column-gutters: 16px;
+    --template-columns: 2;
+  }
+}
+
+@media (min-width: 830px) {
+  .cards-grid {
+    --template-columns: 3;
+  }
+}
+
+@media (min-width: 1024px) {
+  .cards-grid {
+    --template-columns: 4;
+    --template-reduced-columns: 1;
+  }
+}
+
+@media (min-width: 2256px) {
+  .cards-grid {
+    --template-column-gutters: 24px;
+  }
+}
+
+@media (min-width: 70rem) {
+  .cards-grid {
+    --template-columns: 4;
+  }
+}
+
+@media (min-width: 1124px) {
+  .cards-grid {
+    --template-columns: 5;
+  }
+}
+
+@media (min-width: 90rem) {
+  .cards-grid {
+    --template-columns: 5;
+  }
+}
+@media (min-width: 110rem) {
+  .cards-grid {
+    --template-columns: 6;
+  }
+}
+
+@media (min-width: 130rem) {
+  .cards-grid {
+    --template-columns: 7;
+  }
+}
+
+@media (min-width: 150rem) {
+  .cards-grid {
+    --template-columns: 8;
+  }
 }
