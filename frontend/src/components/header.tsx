@@ -36,12 +36,12 @@ export const Header = () => {
               <img
                 src="/icons/logo-white.png"
                 alt="logo"
-                className="max-h-[60px]"
+                className="tablet:max-h-[60px] h-10"
               />
             </picture>
           </Link>
 
-          <nav className="flex gap-10 items-center">
+          <nav className="flex gap-5 tablet:gap-10 items-end tablet:items-center flex-col-reverse tablet:flex-row">
             <ConnectButton />
 
             <button onClick={onOpen}>
