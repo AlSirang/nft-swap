@@ -6,7 +6,7 @@ NFT enthusiasts lack a secure and streamlined platform to swap their digital ass
 
 ## Solution
 
-Create a user-friendly NFT swap platform with user verification, NFT verification, optional ETH transactions, and an escrow service to enhance trust, efficiency, and accessibility in the NFT swap ecosystem.
+Create a user-friendly NFT swap platform, It allows NFT swap, optional ETH can be send along offer. It is an escrow service to enhance trust, efficiency, and accessibility in the NFT swap ecosystem.
 
 # Folder structure
 
