@@ -64,8 +64,3 @@ export const HomeView: React.FunctionComponent<ICardProps> = ({
     </section>
   );
 };
-
-export const getServerSideProps = () => {
-  try {
-  } catch (err) {}
-};

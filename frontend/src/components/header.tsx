@@ -3,7 +3,6 @@ import Link from "next/link";
 import { useAccount } from "wagmi";
 import { httpClient } from "@/configs/axios.config";
 import { ConnectButton } from "./connectButton";
-import { Popover } from "@headlessui/react";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { shortenAddress } from "@/utils/functions";
@@ -51,7 +50,10 @@ export const Header = () => {
               >
                 Top Collections
               </Link>
-              <Link href="/" className="text-lg font-medium hover:underline">
+              <Link
+                href="/collectors"
+                className="text-lg font-medium hover:underline"
+              >
                 Collectors
               </Link>
             </span>
@@ -149,7 +151,7 @@ function Menu({
                         Top Collections
                       </Link>
                       <Link
-                        href="/"
+                        href="/collectors"
                         className="text-lg font-medium hover:underline"
                       >
                         Collectors
