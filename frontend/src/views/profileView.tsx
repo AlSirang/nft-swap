@@ -1,14 +1,17 @@
 import { useEffect } from "react";
+import { Tab } from "@headlessui/react";
 import { EtherscanLink } from "@/components/etherscanLink";
 import { ProfileMeta } from "@/components/profile/meta";
 import { Collections } from "@/components/profile/collections";
 import { useProfileProvider } from "@/context/profileContextProvider";
 import { shortenAddress } from "@/utils/functions";
 import { profileAvatar } from "@/utils/imgSrc";
-import { IProfileContext } from "@/types";
+import { IProfileState } from "@/types";
+import { OffersSent } from "@/components/profile/offersSent";
 
-export const ProfileView = (props: IProfileContext) => {
-  const { account, collections, totalCollections, totalNFTs } = props;
+export const ProfileView = (props: IProfileState) => {
+  const { account, collections, totalCollections, totalNFTs, offersSent } =
+    props;
 
   const { setProfileInfo } = useProfileProvider();
   useEffect(() => {
@@ -16,6 +19,7 @@ export const ProfileView = (props: IProfileContext) => {
       collections,
       totalCollections,
       totalNFTs,
+      offersSent,
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -49,9 +53,25 @@ export const ProfileView = (props: IProfileContext) => {
           </div>
         </div>
       </div>
-      <hr className="m-auto mt-10" />
-
-      <Collections />
+      <hr className="m-auto mt-10 mb-5" />
+      <Tab.Group>
+        <Tab.List className="flex gap-2 flex-wrap">
+          <Tab className="bg-white hover:bg-slate-200 transition-all text-black px-10 py-1 font-medium rounded-md">
+            NFTs
+          </Tab>
+          <Tab className="bg-white hover:bg-slate-200 transition-all text-black px-10 py-1 font-medium rounded-md">
+            Offers Sent
+          </Tab>
+        </Tab.List>
+        <Tab.Panels>
+          <Tab.Panel>
+            <Collections />
+          </Tab.Panel>
+          <Tab.Panel>
+            <OffersSent />
+          </Tab.Panel>
+        </Tab.Panels>
+      </Tab.Group>
     </section>
   );
 };

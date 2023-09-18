@@ -6,6 +6,7 @@ const ProfileContext = createContext<IProfileContext>({
   totalNFTs: 0,
   totalCollections: 0,
   collections: [],
+  offersSent: [],
   setProfileInfo: () => {},
 });
 
@@ -14,6 +15,7 @@ export const ProfileContextProvider = ({ children }: IContext) => {
     totalCollections: 0,
     totalNFTs: 0,
     collections: [],
+    offersSent: [],
   });
 
   return (

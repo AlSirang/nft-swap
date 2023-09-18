@@ -33,3 +33,28 @@ export const GET_COLLECTIONS = gql`
     }
   }
 `;
+
+export const GET_OFFERS_SENT_BY_ADDRESS = gql`
+  query getOffersSentByAddress($from: String!) {
+    submitOffers(where: { from: $from }) {
+      toId
+      fromId
+      offerIndex
+      msgValue
+      toCollection
+      fromCollection
+      from
+    }
+  }
+`;
+
+export const GET_ALL_REMOVED_OFFERS = gql`
+  query {
+    offerRemoveds {
+      offerId
+      fromId
+      toId
+      toCollection
+    }
+  }
+`;
