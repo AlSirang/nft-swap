@@ -1,6 +1,6 @@
-import { apolloClient } from "@/pages/_app";
 import { Address } from "viem";
 import { FetchPolicy } from "@apollo/client";
+import { apolloClient } from "@/providers/apolloProvider";
 import { GET_Removed_Offers, GET_Submit_Offers } from "@/utils/gqlQeries";
 import { ISubmitOffer } from "@/types";
 

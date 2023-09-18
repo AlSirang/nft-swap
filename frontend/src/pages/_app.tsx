@@ -4,15 +4,8 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import { Toaster } from "react-hot-toast";
 import "@/styles/globals.css";
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { Footer } from "@/components/footer";
-
-export const apolloClient = new ApolloClient({
-  uri: "https://api.studio.thegraph.com/query/52562/nftexchange/v1",
-  cache: new InMemoryCache({
-    addTypename: false,
-  }),
-});
+import { ApolloProvider } from "@/providers/apolloProvider";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -21,7 +14,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <title>NFT Swap</title>
       </Head>
       <RainbowKitProvider>
-        <ApolloProvider client={apolloClient}>
+        <ApolloProvider>
           <main className="flex flex-col min-h-screen">
             <div>
               <Header />

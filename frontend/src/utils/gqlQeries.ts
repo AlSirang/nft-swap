@@ -24,3 +24,12 @@ export const GET_Removed_Offers = gql`
     }
   }
 `;
+
+export const GET_COLLECTIONS = gql`
+  query getCollections($page: Int!) {
+    submitOffers(first: $page) {
+      toCollection
+      fromCollection
+    }
+  }
+`;
