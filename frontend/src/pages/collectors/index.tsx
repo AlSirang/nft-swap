@@ -17,7 +17,7 @@ export default function Index({ users }: IProps) {
   return (
     <section className="container mx-auto mt-16 px-4">
       <h1 className="font-semibold text-xl tablet:text-2xl mb-10">
-        Top Collections
+        Top Collectors
       </h1>
       <div className="cards-grid">
         {users.map(({ _id, address }) => (
