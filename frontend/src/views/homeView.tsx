@@ -14,7 +14,7 @@ export const HomeView: React.FunctionComponent<ICardProps> = ({
   return (
     <section className="grid grid-cols-12 tablet:gap-10 mt-20 max-w-6xl m-auto">
       <div className="col-span-12 tablet:col-span-6">
-        <section className="bg-[#fffff3] m-auto w-[80%] p-3.5 rounded-2xl bg-card-blue text-soft-blue text-lg font-normal shadow-xl">
+        <div className="bg-[#fffff3] m-auto w-[80%] p-3.5 rounded-2xl bg-card-blue text-soft-blue text-lg font-normal shadow-xl">
           <picture>
             <img
               className="max-h-[30rem] m-auto rounded-xl"
@@ -22,7 +22,7 @@ export const HomeView: React.FunctionComponent<ICardProps> = ({
               alt="img"
             />
           </picture>
-        </section>
+        </div>
       </div>
 
       <div className="col-span-12 tablet:col-span-6 text-center tablet:text-left py-10">
