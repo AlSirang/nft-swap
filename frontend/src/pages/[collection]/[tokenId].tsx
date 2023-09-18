@@ -4,12 +4,12 @@ import { extractCollectionInfo } from "@/utils/functions";
 import { OffersHistoryProvider } from "@/context/offersHistoryProvider";
 import { ICollectionPageProps } from "@/types";
 import { getOffers } from "@/core/getOffers";
-import { NFTInfo } from "@/views/NFTInfo";
+import { NFTInfoView } from "@/views/NFTInfoView";
 
 export default function Page(props: ICollectionPageProps) {
   return (
     <OffersHistoryProvider>
-      <NFTInfo {...props} />
+      <NFTInfoView {...props} />
     </OffersHistoryProvider>
   );
 }

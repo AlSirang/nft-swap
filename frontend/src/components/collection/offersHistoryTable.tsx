@@ -130,7 +130,7 @@ export const OffersHistoryTable = ({
                 </td>
                 <td className="px-4 py-2 ">
                   <Link
-                    href={`/collection/${offer.fromCollection}`}
+                    href={`/collections/${offer.fromCollection}`}
                     className="hover:underline transition-all"
                   >
                     {shortenAddress(offer.fromCollection)}

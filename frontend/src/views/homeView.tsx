@@ -2,7 +2,7 @@ import { ICardProps } from "@/types";
 import { collectionAvatar } from "@/utils/imgSrc";
 import Link from "next/link";
 
-export const HomeMain: React.FunctionComponent<ICardProps> = ({
+export const HomeView: React.FunctionComponent<ICardProps> = ({
   image,
   title,
   contract,
@@ -33,23 +33,21 @@ export const HomeMain: React.FunctionComponent<ICardProps> = ({
           </div>
 
           <div className="mt-5 flex gap-5 items-center justify-center tablet:justify-normal">
-            <div>
-              <h2 className="text-lg flex gap-2 items-center">
-                <picture>
-                  <img
-                    className="relative inline-block h-12 w-12 rounded-xl object-cover object-center"
-                    alt="collection avatar"
-                    src={collectionAvatar}
-                  />
-                </picture>
+            <div className="text-lg flex gap-2 items-center">
+              <picture>
+                <img
+                  className="relative inline-block h-12 w-12 rounded-xl object-cover object-center"
+                  alt="collection avatar"
+                  src={collectionAvatar}
+                />
+              </picture>
 
-                <div>
-                  <h2 className="font-semibold">Collection</h2>
-                  <p>
-                    {name}({symbol})
-                  </p>
-                </div>
-              </h2>
+              <div className="text-left">
+                <h2 className="font-semibold">Collection</h2>
+                <p>
+                  {name}({symbol})
+                </p>
+              </div>
             </div>
 
             <Link

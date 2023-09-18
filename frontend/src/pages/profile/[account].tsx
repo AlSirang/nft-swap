@@ -1,13 +1,13 @@
 import { ProfileContextProvider } from "@/context/profileContextProvider";
 import { getAllCollections } from "@/core/getAllCollections";
 import { IProfileContext } from "@/types";
-import { Profile } from "@/views/profile";
+import { ProfileView } from "@/views/profileView";
 import { NextPageContext } from "next";
 
 export default function Page(props: IProfileContext) {
   return (
     <ProfileContextProvider>
-      <Profile {...props} />
+      <ProfileView {...props} />
     </ProfileContextProvider>
   );
 }

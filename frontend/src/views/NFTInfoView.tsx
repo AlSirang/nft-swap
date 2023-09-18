@@ -10,7 +10,7 @@ import { shortenAddress } from "@/utils/functions";
 import { collectionAvatar } from "@/utils/imgSrc";
 import { ICollectionPageProps } from "@/types";
 
-export function NFTInfo(props: ICollectionPageProps) {
+export function NFTInfoView(props: ICollectionPageProps) {
   const {
     contract,
     image,
@@ -85,7 +85,7 @@ export function NFTInfo(props: ICollectionPageProps) {
                       {shortenAddress(contract)}
                     </EtherscanLink>
                     <Link
-                      href={`/collection/${contract}`}
+                      href={`/collections/${contract}`}
                       className="hover:underline"
                     >
                       {name}({symbol})

@@ -60,7 +60,6 @@ npm run build
   │   │   ├── etherscanLink.tsx
   │   │   ├── footer.tsx
   │   │   ├── header.tsx
-  │   │   ├── home
   │   │   └── profile
   │   ├── configs
   │   │   ├── alchemy.config.ts
@@ -83,7 +82,7 @@ npm run build
   │   │   ├── _app.tsx
   │   │   ├── [collection]
   │   │   │   └── [tokenId].tsx
-  │   │   ├── collection
+  │   │   ├── collections
   │   │   │   └── [collection].tsx
   │   │   ├── index.tsx
   │   │   └── profile
@@ -100,8 +99,9 @@ npm run build
   │   │   ├── gqlQeries.ts
   │   │   └── imgSrc.ts
   │   └── views
-  │       ├── NFTInfo.tsx
-  │       └── profile.tsx
+  │       ├── homeView.tsx
+  │       ├── NFTInfoView.tsx
+  │       └── profileView.tsx
   ├── tailwind.config.js
   └── tsconfig.json
 ```

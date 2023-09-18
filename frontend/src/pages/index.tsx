@@ -1,15 +1,11 @@
-import { HomeMain } from "@/components/home/homeMain";
+import { HomeView } from "@/views/homeView";
 import { dummyCollections } from "@/utils/dummyCollections";
 import { alchemy } from "@/configs/alchemy.config";
 import { extractCollectionInfo } from "@/utils/functions";
 import { IHomePageProps } from "@/types";
 
 export default function Home(props: IHomePageProps) {
-  return (
-    <section>
-      <HomeMain {...props} />
-    </section>
-  );
+  return <HomeView {...props} />;
 }
 
 export const getServerSideProps = async () => {

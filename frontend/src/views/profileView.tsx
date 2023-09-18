@@ -7,7 +7,7 @@ import { shortenAddress } from "@/utils/functions";
 import { profileAvatar } from "@/utils/imgSrc";
 import { IProfileContext } from "@/types";
 
-export const Profile = (props: IProfileContext) => {
+export const ProfileView = (props: IProfileContext) => {
   const { account, collections, totalCollections, totalNFTs } = props;
 
   const { setProfileInfo } = useProfileProvider();
